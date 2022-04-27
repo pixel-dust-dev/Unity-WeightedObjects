@@ -1,6 +1,6 @@
 {
-  "name": "com.pixeldust.weighted-lists",
-  "version": "1.0.0",
+  "name": "com.pixeldust.com.pixel-dust.weighted-lists",
+  "version": "1.0.1",
   "displayName": "PixelDust Weighted Lists (alpha)",
   "description": "A faster way to deal with random elements in lists!",
   "unity": "2019.1",
@@ -18,5 +18,6 @@
     "email": "alistair.m.obrien@gmail.com",
     "url": "https://github.com/pixel-reverie"
   },
-  "type": "tool"
+  "type": "tool",
+  "hideInEditor": true
 }

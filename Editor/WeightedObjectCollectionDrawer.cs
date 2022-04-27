@@ -46,7 +46,14 @@ namespace WeightedObjects
                     Rect arrRect = position;
                     arrRect.height = arrHeight;
 
-                    EditorGUI.PropertyField(arrRect, arrProp, label);
+                    if(arrProp.hasMultipleDifferentValues)
+                    {
+                        EditorGUI.HelpBox(arrRect, "Multiple Array Editing is not supported.", MessageType.Warning);
+                    }
+                    else
+                    {
+                        EditorGUI.PropertyField(arrRect, arrProp, label);
+                    }
                     position.y += EditorGUI.GetPropertyHeight(arrProp);
                 }
 

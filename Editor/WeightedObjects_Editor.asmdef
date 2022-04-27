@@ -1,0 +1,19 @@
+{
+    "name": "PixelDust.WeightedObjects.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:69e313442607c504e9e62cffcff7ddba",
+        "GUID:ca7b4963980f2814cbb088be23661f44"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

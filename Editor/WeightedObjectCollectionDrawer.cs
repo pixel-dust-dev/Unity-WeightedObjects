@@ -52,7 +52,7 @@ namespace WeightedObjects
                     }
                     else
                     {
-                        EditorGUI.PropertyField(arrRect, arrProp, label);
+                        EditorGUI.PropertyField(arrRect, arrProp, label, true);
                     }
                     position.y += EditorGUI.GetPropertyHeight(arrProp);
                 }

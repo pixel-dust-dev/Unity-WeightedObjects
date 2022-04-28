@@ -24,6 +24,7 @@ namespace WeightedObjects
             {
                 //Footer
                 height += ExtraEditorGUIUtility.SingleLineHeight();
+                height += ExtraEditorGUIUtility.SingleLineHeight();
 #if UNITY_2020_1_1
                 height += ExtraEditorGUIUtility.SingleLineHeight();
 #endif
@@ -68,7 +69,6 @@ namespace WeightedObjects
 #if UNITY_2020_1_1
                 position.y += ExtraEditorGUIUtility.SingleLineHeight();
 #endif
-
                 if (arrProp.isExpanded)
                 {
                     //float colTitleLeftOffset = 48; 
@@ -103,17 +103,19 @@ namespace WeightedObjects
                     //SUM
                     Rect sumLabelRect = position;
                     sumLabelRect.x += 0;
-                    float sum = 0;
-                    for (int i = 0; i < arrProp.arraySize; i++)
-                    {
-                        sum += arrProp.GetArrayElementAtIndex(i).FindPropertyRelative("weight").floatValue;
-                    }
                     EditorGUI.LabelField(sumLabelRect, new GUIContent("Sum:"), EditorStyles.miniBoldLabel);
-
-                    Rect sumValRect = weightColRect;
-                    sumValRect.y = position.y;
-                    sumValRect.x += colTitleLeftOffset;
-                    GUI.Box(sumValRect, new GUIContent($"{sum}"), EditorStyles.centeredGreyMiniLabel);
+                    if (!property.hasMultipleDifferentValues)
+                    {
+                        float sum = 0;
+                        for (int i = 0; i < arrProp.arraySize; i++)
+                        {
+                            sum += arrProp.GetArrayElementAtIndex(i).FindPropertyRelative("weight").floatValue;
+                        }
+                        Rect sumValRect = weightColRect;
+                        sumValRect.y = position.y;
+                        sumValRect.x += colTitleLeftOffset;
+                        GUI.Box(sumValRect, new GUIContent($"{sum}"), EditorStyles.centeredGreyMiniLabel);
+                    }
 
                     //UTILITIES
                     Rect toolBarRect = position;
@@ -124,6 +126,7 @@ namespace WeightedObjects
                     GUI.Box(toolBarRect, "");
                     //GUI.backgroundColor = o_color;
 
+                    EditorGUI.BeginDisabledGroup(property.hasMultipleDifferentValues);
                     if (toolBarRect.width > 40)
                     {
                         Rect sortRect = DrawSortRect(toolBarRect, arrProp);
@@ -132,13 +135,17 @@ namespace WeightedObjects
                             DrawNormalizeButton(arrProp, sortRect);
                         }
                     }
+                    EditorGUI.EndDisabledGroup();
 
+                    position.y += ExtraEditorGUIUtility.SingleLineHeight();
+
+                    SerializedProperty randomType = property.FindPropertyRelative("randomType");
+                    EditorGUI.PropertyField(position, randomType);
                     position.y += ExtraEditorGUIUtility.SingleLineHeight();
 
                     position.y += ExtraEditorGUIUtility.SingleLineHeight();
                 }
             }
-            //Draw Plus Button
             EditorGUI.EndProperty();
         }
 
@@ -193,16 +200,6 @@ namespace WeightedObjects
                     weightProp.floatValue = (float)System.Math.Round(norm * weightProp.floatValue, 3);
                 }
             }
-        }
-
-        private void OnPlay(SerializedProperty obj)
-        {
-            Debug.Log("PLAY!");
-        }
-
-        private void OnStop(SerializedProperty obj)
-        {
-            Debug.Log("STOOOOP =[");
         }
     }
 }

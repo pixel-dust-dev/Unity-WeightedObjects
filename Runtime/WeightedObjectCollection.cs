@@ -15,9 +15,12 @@ namespace WeightedObjects
 
         public int Length => weightedObjects.Length;
 
-        //RUNTIME USE
+        //Runtime Use
+        // Order
         int currIndex = 0;
+        // Random
         List<int> randomPool = new List<int>();
+        //
 
         public T GetRandom()
         {

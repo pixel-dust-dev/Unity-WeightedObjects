@@ -63,7 +63,11 @@ namespace WeightedObjects
                     }
                     else
                     {
-                        EditorGUI.PropertyField(arrRect, arrProp, label, true);
+                        GUIContent newLabel = label;
+                        Texture2D tex = Resources.Load("ran") as Texture2D;
+                        newLabel.image = tex;
+
+                        EditorGUI.PropertyField(arrRect, arrProp, newLabel, true);
                     }
                     position.y += EditorGUI.GetPropertyHeight(arrProp);
                 }

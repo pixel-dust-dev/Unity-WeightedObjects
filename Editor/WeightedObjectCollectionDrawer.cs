@@ -6,8 +6,13 @@ namespace WeightedObjects
     [CustomPropertyDrawer(typeof(WeightedObjectCollection<>), true)]
     public class WeightedObjectCollectionDrawer : PropertyDrawer
     {
-        public const float WEIGHT_COL_WIDTH = 42;
+#if UNITY_2020_2_OR_NEWER
         public const float MOVE_COL_WIDTH = 28;
+        public const float WEIGHT_COL_WIDTH = 42;
+#else
+        public const float MOVE_COL_WIDTH = 12;
+        public const float WEIGHT_COL_WIDTH = 42;
+#endif
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             float height = 0;
@@ -19,6 +24,9 @@ namespace WeightedObjects
             {
                 //Footer
                 height += ExtraEditorGUIUtility.SingleLineHeight();
+#if UNITY_2020_1_1
+                height += ExtraEditorGUIUtility.SingleLineHeight();
+#endif
             }
 
             return height;
@@ -56,6 +64,10 @@ namespace WeightedObjects
                     }
                     position.y += EditorGUI.GetPropertyHeight(arrProp);
                 }
+
+#if UNITY_2020_1_1
+                position.y += ExtraEditorGUIUtility.SingleLineHeight();
+#endif
 
                 if (arrProp.isExpanded)
                 {

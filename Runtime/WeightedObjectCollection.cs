@@ -3,15 +3,15 @@ using UnityEngine;
 
 namespace WeightedObjects
 {
+    public enum RandomType { WeightedRandom, RandomExhaustive, Ordered }
+
     [System.Serializable]
     public class WeightedObjectCollection<T>
     {
         [SerializeField]
         WeightedObject<T>[] weightedObjects = new WeightedObject<T>[] { };
 
-        public enum RandomType { WeightedRandom, StandardRandom, Ordered }
         public RandomType randomType = RandomType.WeightedRandom;
-        public bool playAllOnce = false;
 
         public int Length => weightedObjects.Length;
 
@@ -41,7 +41,7 @@ namespace WeightedObjects
                 currIndex++;
                 return returnedObject;
             }
-            else if(randomType == RandomType.StandardRandom)
+            else if(randomType == RandomType.RandomExhaustive)
             {
                 var selIndex = -1;
 
@@ -69,8 +69,9 @@ namespace WeightedObjects
                         selIndex = randomPool[0];
                     }
                     Debug.Log(selIndex);
-                    randomPool.Remove(selIndex);
                 }
+
+                randomPool.Remove(selIndex);
 
                 var selectedEntry = weightedObjects[selIndex];
 
@@ -86,7 +87,15 @@ namespace WeightedObjects
                 randomPool = new List<int>();
                 for (int i = 0; i < weightedObjects.Length; i++)
                 {
-                    randomPool.Add(i);
+                    int number = (int)weightedObjects[i].Weight;
+                    if(number < 1)
+                    {
+                        number = 1;
+                    }
+                    for (int j = 0; j < number; j++)
+                    {
+                        randomPool.Add(i);
+                    }
                 }
                 Debug.Log("Reset");
             }

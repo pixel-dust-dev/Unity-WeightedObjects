@@ -46,6 +46,8 @@ namespace WeightedObjects
             if (!property.isExpanded) { property.isExpanded = true; }
             if(property.isExpanded)
             {
+                SerializedProperty randomTypeProp = property.FindPropertyRelative("randomType");
+
                 var arrProp = property.FindPropertyRelative("weightedObjects");
 
                 //Draw Array
@@ -89,7 +91,23 @@ namespace WeightedObjects
                     weightColRect.x += colTitleLeftOffset + MOVE_COL_WIDTH;
                     weightColRect.height = colTitleHeight;
                     weightColRect.width = WEIGHT_COL_WIDTH;
-                    GUI.Box(weightColRect, new GUIContent("Ran ▲"), EditorStyles.helpBox);
+                    GUIContent numberGUIContent = new GUIContent("");
+                    RandomType randomType = (RandomType)randomTypeProp.enumValueIndex;
+                    switch (randomType)
+                    {
+                        case RandomType.WeightedRandom:
+                            numberGUIContent = new GUIContent("Wt  ▲", "The larger, the more likely it will be selected.");
+                            break;
+                        case RandomType.RandomExhaustive:
+                            numberGUIContent = new GUIContent("Amt ▲", "The amount of times it will appear before the pool is exhausted.");
+                            break;
+                        case RandomType.Ordered:
+                            numberGUIContent = new GUIContent("Ord ▲", "Will play in the visual order. Use Sort button to sort by this value.");
+                            break;
+                        default:
+                            break;
+                    }
+                    GUI.Box(weightColRect, numberGUIContent, EditorStyles.helpBox);
 
                     Rect contentColRect = indentedColPos;
                     contentColRect.height = colTitleHeight;
@@ -139,8 +157,7 @@ namespace WeightedObjects
 
                     position.y += ExtraEditorGUIUtility.SingleLineHeight();
 
-                    SerializedProperty randomType = property.FindPropertyRelative("randomType");
-                    EditorGUI.PropertyField(position, randomType);
+                    EditorGUI.PropertyField(position, randomTypeProp);
                     position.y += ExtraEditorGUIUtility.SingleLineHeight();
 
                     position.y += ExtraEditorGUIUtility.SingleLineHeight();

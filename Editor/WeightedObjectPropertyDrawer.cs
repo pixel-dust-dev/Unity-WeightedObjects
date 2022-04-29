@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using System.Linq;
+using Bewildered.Editor;
 
 namespace WeightedObjects
 {
-
     [CustomPropertyDrawer(typeof(WeightedObject<>), true)]
     public class WeightedObjectPropertyDrawer : PropertyDrawer
     {
@@ -14,7 +14,18 @@ namespace WeightedObjects
         {
             var contentsProp = property.FindPropertyRelative("contents");
 
-            var o_color = GUI.backgroundColor;
+            var o_bgColor = GUI.backgroundColor;
+
+            var targetObject = property.GetValue();
+            var lastPingProperty = targetObject.GetType().GetProperty("LastPing");
+            var lastPing = (float)lastPingProperty.GetValue(targetObject);
+
+            if(EditorApplication.timeSinceStartup - lastPing < .2f)
+            {
+                Color c = Color.cyan;
+                c.a = 0.7f;
+                GUI.backgroundColor = c;
+            }
 
             Rect leftSection = position;
             leftSection.width = WeightedObjectCollectionDrawer.WEIGHT_COL_WIDTH;
@@ -57,6 +68,8 @@ namespace WeightedObjects
                 weightProp.floatValue = EditorGUI.FloatField(leftSection, weightProp.floatValue, EditorStyles.centeredGreyMiniLabel);
                 GUI.contentColor = o_ContentColor;
             }
+
+            GUI.backgroundColor = o_bgColor;
         }
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {

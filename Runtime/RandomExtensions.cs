@@ -43,7 +43,7 @@ namespace WeightedObjects
             return -1;
         }
 
-        public static T GetRandomWeightedIndex<T>(WeightedObject<T>[] weightedObject)
+        public static WeightedObject<T> GetRandomWeightedIndex<T>(WeightedObject<T>[] weightedObject)
         {
             var weights = weightedObject.Select(x => x.Weight).ToArray();
 
@@ -51,10 +51,10 @@ namespace WeightedObjects
 
             if(index == -1)
             {
-                return default(T);
+                return null;
             }
 
-            return weightedObject[index].Contents;
+            return weightedObject[index];
         }
     }
 }

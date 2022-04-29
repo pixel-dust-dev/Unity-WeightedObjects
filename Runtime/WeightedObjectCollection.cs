@@ -24,6 +24,8 @@ namespace WeightedObjects
 
         public T GetRandom()
         {
+            WeightedObject<T> weightedSelection = null;
+
             if(weightedObjects.Length == 0)
             {
                 Debug.LogWarning("No Objects in list.");
@@ -32,7 +34,7 @@ namespace WeightedObjects
 
             if(randomType == RandomType.WeightedRandom)
             {
-                return RandomExtensions.GetRandomWeightedIndex<T>(weightedObjects);
+                weightedSelection = RandomExtensions.GetRandomWeightedIndex<T>(weightedObjects);
             }
             else if(randomType == RandomType.Ordered)
             {
@@ -40,9 +42,8 @@ namespace WeightedObjects
                 {
                     currIndex = 0;
                 }
-                T returnedObject = weightedObjects[currIndex].Contents;
+                weightedSelection = weightedObjects[currIndex];
                 currIndex++;
-                return returnedObject;
             }
             else if(randomType == RandomType.RandomExhaustive)
             {
@@ -58,7 +59,6 @@ namespace WeightedObjects
                 if (randomPool.Count == 1)
                 {
                     selIndex = randomPool[0];
-                    Debug.Log(selIndex);
                     RebuildRandomPool();
                 }
                 else
@@ -71,14 +71,20 @@ namespace WeightedObjects
                         RebuildRandomPool();
                         selIndex = randomPool[0];
                     }
-                    Debug.Log(selIndex);
                 }
 
                 randomPool.Remove(selIndex);
 
-                var selectedEntry = weightedObjects[selIndex];
+                weightedSelection = weightedObjects[selIndex];
 
-                return selectedEntry.Contents;
+            }
+
+            if(weightedSelection != null)
+            {
+#if UNITY_EDITOR
+                weightedSelection.Ping();
+#endif
+                return weightedSelection.Contents;
             }
             else
             {
@@ -100,7 +106,6 @@ namespace WeightedObjects
                         randomPool.Add(i);
                     }
                 }
-                Debug.Log("Reset");
             }
         }
     }

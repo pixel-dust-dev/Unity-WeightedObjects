@@ -16,11 +16,10 @@ namespace WeightedObjects
 
             var o_bgColor = GUI.backgroundColor;
 
-            var targetObject = property.GetValue();
-            var lastPingProperty = targetObject.GetType().GetProperty("LastPing");
-            var lastPing = (float)lastPingProperty.GetValue(targetObject);
+            var targetObject = property.GetValue<WeightedObject>();
+            var lastPing = targetObject.LastPing;
 
-            if(EditorApplication.timeSinceStartup - lastPing < .2f)
+            if (EditorApplication.timeSinceStartup - lastPing < .2f)
             {
                 Color c = Color.cyan;
                 c.a = 0.7f;

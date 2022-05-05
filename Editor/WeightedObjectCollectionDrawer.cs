@@ -35,11 +35,11 @@ namespace WeightedObjects
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            Rect containerRect = EditorGUI.IndentedRect(position);
+            Rect containerRect = position;
             containerRect.height = GetPropertyHeight(property, label);
-            GUI.Box(containerRect, "");
+            //GUI.Box(containerRect, "");
 
-            EditorGUI.BeginProperty(position, label, property);
+            EditorGUI.BeginProperty(EditorGUI.IndentedRect(position), label, property);
 
             position.height = EditorGUIUtility.singleLineHeight;
 
@@ -145,7 +145,7 @@ namespace WeightedObjects
                     toolBarRect.x += colTitleLeftOffset + WEIGHT_COL_WIDTH;
                     Color o_color = GUI.backgroundColor;
                     //GUI.backgroundColor = Color.red;
-                    GUI.Box(toolBarRect, "");
+                    //GUI.Box(toolBarRect, "");
                     //GUI.backgroundColor = o_color;
 
                     EditorGUI.BeginDisabledGroup(property.hasMultipleDifferentValues);

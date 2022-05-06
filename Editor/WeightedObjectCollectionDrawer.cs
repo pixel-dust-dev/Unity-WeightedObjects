@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using Bewildered.Editor;
+using UnityEditor;
 using UnityEngine;
 
 namespace WeightedObjects
@@ -6,6 +7,7 @@ namespace WeightedObjects
     [CustomPropertyDrawer(typeof(WeightedObjectCollection<>), true)]
     public class WeightedObjectCollectionDrawer : PropertyDrawer
     {
+        SerializedProperty cachedArrProp;
 #if UNITY_2020_2_OR_NEWER
         public const float MOVE_COL_WIDTH = 28;
         public const float WEIGHT_COL_WIDTH = 42;
@@ -17,6 +19,7 @@ namespace WeightedObjects
         {
             float height = 0;
             var arrProp = property.FindPropertyRelative("weightedObjects");
+            cachedArrProp = arrProp;
             float arrHeight = EditorGUI.GetPropertyHeight(arrProp);
             height += arrHeight;
 
@@ -31,6 +34,15 @@ namespace WeightedObjects
             }
 
             return height;
+        }
+
+        public virtual void ResetArray()
+        {
+            for (int i = 0; i < cachedArrProp.arraySize; i++)
+            {
+                var element = cachedArrProp.GetArrayElementAtIndex(i);
+                element.GetValue<WeightedObject>().SetWeight(1);
+            }
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -67,7 +79,16 @@ namespace WeightedObjects
                         Texture2D tex = Resources.Load("ran") as Texture2D;
                         newLabel.image = tex;
 
+                        EditorGUI.BeginChangeCheck();
+                        int originalSize = arrProp.arraySize;
                         EditorGUI.PropertyField(arrRect, arrProp, newLabel, true);
+                        if(EditorGUI.EndChangeCheck())
+                        {
+                            if(originalSize == 0 && arrProp.arraySize > 0)
+                            {
+                                this.ResetArray();
+                            }
+                        }
                     }
                     position.y += EditorGUI.GetPropertyHeight(arrProp);
                 }

@@ -19,6 +19,10 @@ namespace WeightedObjects
             this.lastPing = (float)UnityEditor.EditorApplication.timeSinceStartup;
         }
 #endif
+        public void SetWeight(int newWeight)
+        {
+            this.weight = newWeight;
+        }
     }
 
     [System.Serializable]

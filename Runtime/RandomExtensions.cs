@@ -43,7 +43,7 @@ namespace WeightedObjects
             return -1;
         }
 
-        public static WeightedObject<T> GetRandomWeightedIndex<T>(WeightedObject<T>[] weightedObject)
+        public static WeightedObject<T> GetRandomWeightedIndex<T>(List<WeightedObject<T>> weightedObject)
         {
             var weights = weightedObject.Select(x => x.Weight).ToArray();
 

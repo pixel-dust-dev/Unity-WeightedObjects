@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace WeightedObjects
@@ -10,6 +11,7 @@ namespace WeightedObjects
     {
         [SerializeField]
         WeightedObject<T>[] weightedObjects = new WeightedObject<T>[] { };
+        List<WeightedObject<T>> validWeightedObjects = new List<WeightedObject<T>>();
 
         public RandomType randomType = RandomType.WeightedRandom;
 
@@ -21,6 +23,9 @@ namespace WeightedObjects
         // Random
         List<int> randomPool = new List<int>();
         //
+
+        [SerializeField]
+        bool canRepeat = true;
 
         public T GetRandom()
         {
@@ -34,7 +39,15 @@ namespace WeightedObjects
 
             if(randomType == RandomType.WeightedRandom)
             {
-                weightedSelection = RandomExtensions.GetRandomWeightedIndex<T>(weightedObjects);
+                if(validWeightedObjects.Count == 0)
+                {
+                    validWeightedObjects = weightedObjects.ToList();
+                }
+                weightedSelection = RandomExtensions.GetRandomWeightedIndex<T>(validWeightedObjects);
+                if(!canRepeat)
+                {
+                    validWeightedObjects.Remove(weightedSelection);
+                }
             }
             else if(randomType == RandomType.Ordered)
             {

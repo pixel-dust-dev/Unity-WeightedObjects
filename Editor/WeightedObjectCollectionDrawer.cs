@@ -20,11 +20,21 @@ namespace WeightedObjects
             float arrHeight = EditorGUI.GetPropertyHeight(arrProp);
             height += arrHeight;
 
+
+            var randomTypeProp = property.FindPropertyRelative("randomType");
+            var randomType = (RandomType)randomTypeProp.enumValueIndex;
+
             if (arrProp.isExpanded)
             {
                 //Footer
                 height += ExtraEditorGUIUtility.SingleLineHeight();
                 height += ExtraEditorGUIUtility.SingleLineHeight();
+                
+                if (randomType == RandomType.WeightedRandom)
+                {
+                    height += ExtraEditorGUIUtility.SingleLineHeight();
+                }
+
 #if UNITY_2020_1_1
                 height += ExtraEditorGUIUtility.SingleLineHeight();
 #endif
@@ -47,6 +57,8 @@ namespace WeightedObjects
             if(property.isExpanded)
             {
                 SerializedProperty randomTypeProp = property.FindPropertyRelative("randomType");
+
+                SerializedProperty canRepeatProp = property.FindPropertyRelative("canRepeat");
 
                 var arrProp = property.FindPropertyRelative("weightedObjects");
 
@@ -163,6 +175,12 @@ namespace WeightedObjects
 
                     EditorGUI.PropertyField(position, randomTypeProp);
                     position.y += ExtraEditorGUIUtility.SingleLineHeight();
+
+                    if(randomType == RandomType.WeightedRandom)
+                    {
+                        EditorGUI.PropertyField(position, canRepeatProp);
+                        position.y += ExtraEditorGUIUtility.SingleLineHeight();
+                    }
 
                     position.y += ExtraEditorGUIUtility.SingleLineHeight();
                 }

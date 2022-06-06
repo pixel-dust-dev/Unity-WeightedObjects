@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -10,12 +11,13 @@ namespace WeightedObjects
     public class WeightedObjectCollection<T>
     {
         [SerializeField]
-        WeightedObject<T>[] weightedObjects = new WeightedObject<T>[] { };
+        List<WeightedObject<T>> weightedObjects = new List<WeightedObject<T>> { };
         List<WeightedObject<T>> validWeightedObjects = new List<WeightedObject<T>>();
 
         public RandomType randomType = RandomType.WeightedRandom;
+        public bool canRepeat = true;
 
-        public int Length => weightedObjects.Length;
+        public int Length => weightedObjects.Count;
 
         //Runtime Use
         // Order
@@ -24,14 +26,16 @@ namespace WeightedObjects
         List<int> randomPool = new List<int>();
         //
 
-        [SerializeField]
-        bool canRepeat = true;
+        public void Add(T newObj, int weight)
+        {
+            weightedObjects.Add(new WeightedObject<T>(newObj, weight));
+        }
 
         public T GetRandom()
         {
             WeightedObject<T> weightedSelection = null;
 
-            if(weightedObjects.Length == 0)
+            if(weightedObjects.Count == 0)
             {
                 Debug.LogWarning("No Objects in list.");
                 return default(T);
@@ -51,7 +55,7 @@ namespace WeightedObjects
             }
             else if(randomType == RandomType.Ordered)
             {
-                if (currIndex >= weightedObjects.Length)
+                if (currIndex >= weightedObjects.Count)
                 {
                     currIndex = 0;
                 }
@@ -79,7 +83,7 @@ namespace WeightedObjects
                     int ranIndex = UnityEngine.Random.Range(0, randomPool.Count);
                     selIndex = randomPool[ranIndex];
                     
-                    if (selIndex >= weightedObjects.Length)
+                    if (selIndex >= weightedObjects.Count)
                     {
                         RebuildRandomPool();
                         selIndex = randomPool[0];
@@ -107,7 +111,7 @@ namespace WeightedObjects
             void RebuildRandomPool()
             {
                 randomPool = new List<int>();
-                for (int i = 0; i < weightedObjects.Length; i++)
+                for (int i = 0; i < weightedObjects.Count; i++)
                 {
                     int number = (int)weightedObjects[i].Weight;
                     if(number < 1)

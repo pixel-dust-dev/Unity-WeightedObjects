@@ -30,6 +30,13 @@ namespace WeightedObjects
     {
         [SerializeField]
         T contents;
+
+        public WeightedObject(T newObj, int weight)
+        {
+            this.contents = newObj;
+            this.SetWeight(weight);
+        }
+
         public T Contents => contents;
     }
 }

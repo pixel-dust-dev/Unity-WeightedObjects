@@ -17,6 +17,7 @@ namespace WeightedObjects
         public RandomType randomType = RandomType.WeightedRandom;
         public bool canRepeat = true;
 
+        private int lastCount = -1;
         public int Length => weightedObjects.Count;
 
         //Runtime Use
@@ -35,7 +36,14 @@ namespace WeightedObjects
         {
             WeightedObject<T> weightedSelection = null;
 
-            if(weightedObjects.Count == 0)
+            if(lastCount != Length)
+            {
+                lastCount = Length;
+                validWeightedObjects = weightedObjects.ToList();
+                RebuildRandomPool();
+            }
+
+            if (weightedObjects.Count == 0)
             {
                 Debug.LogWarning("No Objects in list.");
                 return default(T);

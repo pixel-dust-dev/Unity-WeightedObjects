@@ -32,12 +32,14 @@ namespace WeightedObjects
             weightedObjects.Add(new WeightedObject<T>(newObj, weight));
         }
 
+        int lastSeed = 0;
         public T GetRandom(int seed = 0)
         {
             WeightedObject<T> weightedSelection = null;
 
-            if(lastCount != Length)
+            if(lastCount != Length || lastSeed != seed)
             {
+                lastSeed = seed;
                 lastCount = Length;
                 validWeightedObjects = weightedObjects.ToList();
                 RebuildRandomPool();

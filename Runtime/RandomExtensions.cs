@@ -7,7 +7,7 @@ namespace WeightedObjects
 {
     public static class RandomExtensions
     {
-        public static int GetRandomWeightedIndex(float[] weights)
+        public static int GetRandomWeightedIndex(float[] weights, int seed = 0)
         {
             if (weights == null || weights.Length == 0) return -1;
 
@@ -28,6 +28,10 @@ namespace WeightedObjects
                 }
             }
 
+            if(seed > 0)
+            {
+                UnityEngine.Random.InitState(seed);
+            }
             float r = Random.value;
             float s = 0f;
 
@@ -43,11 +47,11 @@ namespace WeightedObjects
             return -1;
         }
 
-        public static WeightedObject<T> GetRandomWeightedIndex<T>(List<WeightedObject<T>> weightedObject)
+        public static WeightedObject<T> GetRandomWeightedIndex<T>(List<WeightedObject<T>> weightedObject, int seed = 0)
         {
             var weights = weightedObject.Select(x => x.Weight).ToArray();
 
-            var index = GetRandomWeightedIndex(weights);
+            var index = GetRandomWeightedIndex(weights, seed);
 
             if(index == -1)
             {

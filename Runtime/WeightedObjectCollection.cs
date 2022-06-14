@@ -32,7 +32,7 @@ namespace WeightedObjects
             weightedObjects.Add(new WeightedObject<T>(newObj, weight));
         }
 
-        public T GetRandom()
+        public T GetRandom(int seed = 0)
         {
             WeightedObject<T> weightedSelection = null;
 
@@ -55,7 +55,7 @@ namespace WeightedObjects
                 {
                     validWeightedObjects = weightedObjects.ToList();
                 }
-                weightedSelection = RandomExtensions.GetRandomWeightedIndex<T>(validWeightedObjects);
+                weightedSelection = RandomExtensions.GetRandomWeightedIndex<T>(validWeightedObjects, seed);
                 if(!canRepeat)
                 {
                     validWeightedObjects.Remove(weightedSelection);
@@ -88,6 +88,10 @@ namespace WeightedObjects
                 }
                 else
                 {
+                    if(seed > 0)
+                    {
+                        UnityEngine.Random.InitState(seed);
+                    }
                     int ranIndex = UnityEngine.Random.Range(0, randomPool.Count);
                     selIndex = randomPool[ranIndex];
                     

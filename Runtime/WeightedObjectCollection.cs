@@ -41,8 +41,7 @@ namespace WeightedObjects
             {
                 lastSeed = seed;
                 lastCount = Length;
-                validWeightedObjects = weightedObjects.ToList();
-                RebuildRandomPool();
+                ResetState();
             }
 
             if (weightedObjects.Count == 0)
@@ -79,14 +78,14 @@ namespace WeightedObjects
                 //First generation
                 if(randomPool.Count == 0)
                 {
-                    RebuildRandomPool();
+                    ResetState();
                 }
 
                 //If there is a final element in the pool
                 if (randomPool.Count == 1)
                 {
                     selIndex = randomPool[0];
-                    RebuildRandomPool();
+                    ResetState();
                 }
                 else
                 {
@@ -99,7 +98,7 @@ namespace WeightedObjects
                     
                     if (selIndex >= weightedObjects.Count)
                     {
-                        RebuildRandomPool();
+                        ResetState();
                         selIndex = randomPool[0];
                     }
                 }
@@ -121,21 +120,27 @@ namespace WeightedObjects
             {
                 return default(T);
             }
+        }
 
-            void RebuildRandomPool()
+        void ResetState()
+        {
+            validWeightedObjects = weightedObjects.ToList();
+            RebuildRandomPool();
+        }
+
+        void RebuildRandomPool()
+        {
+            randomPool = new List<int>();
+            for (int i = 0; i < weightedObjects.Count; i++)
             {
-                randomPool = new List<int>();
-                for (int i = 0; i < weightedObjects.Count; i++)
+                int number = (int)weightedObjects[i].Weight;
+                if (number < 1)
                 {
-                    int number = (int)weightedObjects[i].Weight;
-                    if(number < 1)
-                    {
-                        number = 1;
-                    }
-                    for (int j = 0; j < number; j++)
-                    {
-                        randomPool.Add(i);
-                    }
+                    number = 1;
+                }
+                for (int j = 0; j < number; j++)
+                {
+                    randomPool.Add(i);
                 }
             }
         }

@@ -122,7 +122,7 @@ namespace WeightedObjects
             }
         }
 
-        void ResetState()
+        public void ResetState()
         {
             validWeightedObjects = weightedObjects.ToList();
             RebuildRandomPool();

@@ -73,7 +73,7 @@ namespace WeightedObjects
             }
             else if(randomType == RandomType.RandomExhaustive)
             {
-                var selIndex = -1;
+                var selIndex = 0;
 
                 //First generation
                 if(randomPool.Count == 0)
@@ -82,25 +82,17 @@ namespace WeightedObjects
                 }
 
                 //If there is a final element in the pool
-                if (randomPool.Count == 1)
+                if(seed > 0)
                 {
-                    selIndex = randomPool[0];
-                    ResetState();
+                    UnityEngine.Random.InitState(seed);
                 }
-                else
-                {
-                    if(seed > 0)
-                    {
-                        UnityEngine.Random.InitState(seed);
-                    }
-                    int ranIndex = UnityEngine.Random.Range(0, randomPool.Count);
-                    selIndex = randomPool[ranIndex];
+                int ranIndex = UnityEngine.Random.Range(0, randomPool.Count);
+                selIndex = randomPool[ranIndex];
                     
-                    if (selIndex >= weightedObjects.Count)
-                    {
-                        ResetState();
-                        selIndex = randomPool[0];
-                    }
+                if (selIndex >= weightedObjects.Count)
+                {
+                    ResetState();
+                    selIndex = randomPool[0];
                 }
 
                 randomPool.Remove(selIndex);

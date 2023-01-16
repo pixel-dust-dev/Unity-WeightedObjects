@@ -14,25 +14,32 @@ public class TestScript
 
         var newCollection = new WeightedObjectCollection<int>();
 
-        var testAmount = 20;
+        var cycles = 1;
+
+        var testAmount = 200;
 
         newCollection.randomType = RandomType.WeightedRandom;
         newCollection.canRepeat = false;
 
         for (int i = 0; i < testAmount; i++)
         {
-            newCollection.Add(i, Random.Range(0,100));
+            newCollection.Add(i, Random.Range(1,100));
         }
 
-        var ranSelections = new List<int>();
-
-        for (int i = 0; i < testAmount; i++)
+        for (int x = 0; x < cycles; x++)
         {
-            var ran = newCollection.GetRandom(0);
+            var ranSelections = new List<int>();
+    
+            for (int i = 0; i < testAmount; i++)
+            {
+                var ran = newCollection.GetRandom(0);
 
-            CollectionAssert.DoesNotContain(ranSelections, ran);
+                CollectionAssert.DoesNotContain(ranSelections, ran);
 
-            ranSelections.Add(ran);
+                ranSelections.Add(ran);
+            }
+
+            newCollection.ResetState();
         }
     }
 

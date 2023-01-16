@@ -54,7 +54,7 @@ namespace WeightedObjects
             {
                 if(validWeightedObjects.Count == 0)
                 {
-                    validWeightedObjects = weightedObjects.ToList();
+                    ResetState();
                 }
                 weightedSelection = RandomExtensions.GetRandomWeightedIndex<T>(validWeightedObjects, seed);
                 if(!canRepeat)

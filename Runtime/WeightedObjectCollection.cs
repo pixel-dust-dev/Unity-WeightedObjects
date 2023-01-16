@@ -86,9 +86,11 @@ namespace WeightedObjects
                 {
                     UnityEngine.Random.InitState(seed);
                 }
+
                 int ranIndex = UnityEngine.Random.Range(0, randomPool.Count);
                 selIndex = randomPool[ranIndex];
-                    
+
+                //In case we modified the collection somehow
                 if (selIndex >= weightedObjects.Count)
                 {
                     ResetState();
@@ -98,7 +100,6 @@ namespace WeightedObjects
                 randomPool.Remove(selIndex);
 
                 weightedSelection = weightedObjects[selIndex];
-
             }
 
             if(weightedSelection != null)

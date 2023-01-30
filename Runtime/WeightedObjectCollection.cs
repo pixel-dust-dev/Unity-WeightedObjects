@@ -32,6 +32,21 @@ namespace WeightedObjects
             weightedObjects.Add(new WeightedObject<T>(newObj, weight));
         }
 
+        public bool TryGet(T item, out WeightedObject<T> returnedWeightedObject)
+        {
+            foreach (var weightedObject in weightedObjects)
+            {
+                if(weightedObject.Contents.Equals(item))
+                {
+                    returnedWeightedObject = weightedObject;
+                    return true;
+                }
+            }
+
+            returnedWeightedObject = null;
+            return false;
+        }
+
         int lastSeed = 0;
         public T GetRandom(int seed = 0)
         {

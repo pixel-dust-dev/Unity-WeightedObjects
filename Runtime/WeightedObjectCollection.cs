@@ -61,7 +61,8 @@ namespace WeightedObjects
 
             if (weightedObjects.Count == 0)
             {
-                Debug.LogWarning("No Objects in list.");
+                //TODO: Add verbose option in settings
+                //Debug.LogWarning("No Objects in list.");
                 return default(T);
             }
 

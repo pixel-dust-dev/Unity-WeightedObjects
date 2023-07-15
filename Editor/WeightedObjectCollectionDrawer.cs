@@ -88,7 +88,8 @@ namespace WeightedObjects
                     else
                     {
                         GUIContent newLabel = label;
-                        Texture2D tex = Resources.Load("ran") as Texture2D;
+
+                        Texture2D tex = EditorGUIUtility.Load("Packages/com.pixel-dust.weighted-lists/Editor/Icons/ran.png") as Texture2D;
                         newLabel.image = tex;
 
                         EditorGUI.BeginChangeCheck();

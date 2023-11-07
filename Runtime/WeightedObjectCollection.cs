@@ -29,6 +29,11 @@ namespace WeightedObjects
 
         public void Add(T newObj, int weight)
         {
+            if(weight == 0)
+            {
+                Debug.LogWarning("Cannot add an element with weight of 0.");
+                return;
+            }
             weightedObjects.Add(new WeightedObject<T>(newObj, weight));
         }
 

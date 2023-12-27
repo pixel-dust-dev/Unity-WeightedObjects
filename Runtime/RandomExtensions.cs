@@ -28,10 +28,11 @@ namespace WeightedObjects
                 }
             }
 
-            if(seed == 0)
+            if(seed != 0)
             {
                 UnityEngine.Random.InitState(seed);
             }
+
             float r = Random.value;
             float s = 0f;
 

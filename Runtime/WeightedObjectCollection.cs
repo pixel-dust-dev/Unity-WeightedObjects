@@ -16,6 +16,7 @@ namespace WeightedObjects
 
         public RandomType randomType = RandomType.WeightedRandom;
         public bool canRepeat = true;
+        public bool refillPoolWhenEmpty = true;
 
         private int lastCount = -1;
         public int Length => weightedObjects.Count;
@@ -73,7 +74,7 @@ namespace WeightedObjects
 
             if(randomType == RandomType.WeightedRandom)
             {
-                if(validWeightedObjects.Count == 0)
+                if(refillPoolWhenEmpty && validWeightedObjects.Count == 0)
                 {
                     ResetState();
                 }

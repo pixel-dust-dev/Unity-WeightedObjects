@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace WeightedObjects
 {
@@ -18,7 +19,6 @@ namespace WeightedObjects
         public bool canRepeat = true;
         public bool refillPoolWhenEmpty = true;
 
-        private int lastCount = -1;
         public int Length => weightedObjects.Count;
 
         //Runtime Use
@@ -35,7 +35,11 @@ namespace WeightedObjects
                 Debug.LogWarning("Cannot add an element with weight of 0.");
                 return;
             }
-            weightedObjects.Add(new WeightedObject<T>(newObj, weight));
+            var o = new WeightedObject<T>(newObj, weight);
+            weightedObjects.Add(o);
+            validWeightedObjects.Add(o);
+
+            //Remi(14/01/2025): To be pefectly coherent, we should also add indices to the random pool here instead of relying on next reset. But I don't know the use cases at the moment so I'll keep as it was before
         }
 
         public bool TryGet(T item, out WeightedObject<T> returnedWeightedObject)
@@ -53,17 +57,9 @@ namespace WeightedObjects
             return false;
         }
 
-        int lastSeed = 0;
         public T GetRandom(int seed = 0)
         {
             WeightedObject<T> weightedSelection = null;
-
-            if(lastCount != Length || lastSeed != seed)
-            {
-                lastSeed = seed;
-                lastCount = Length;
-                ResetState();
-            }
 
             if (weightedObjects.Count == 0)
             {
@@ -95,32 +91,22 @@ namespace WeightedObjects
             }
             else if(randomType == RandomType.RandomExhaustive)
             {
-                var selIndex = 0;
-
-                //First generation
+                // Refill the pool if empty
                 if(randomPool.Count == 0)
                 {
                     ResetState();
                 }
 
-                //If there is a final element in the pool
                 if(seed > 0)
                 {
                     UnityEngine.Random.InitState(seed);
                 }
-
                 int ranIndex = UnityEngine.Random.Range(0, randomPool.Count);
-                selIndex = randomPool[ranIndex];
-
-                //In case we modified the collection somehow
-                if (selIndex >= weightedObjects.Count)
-                {
-                    ResetState();
-                    selIndex = randomPool[0];
-                }
+                int selIndex = randomPool[ranIndex];
 
                 randomPool.Remove(selIndex);
 
+                Assert.IsTrue(selIndex < weightedObjects.Count);
                 weightedSelection = weightedObjects[selIndex];
             }
 

@@ -20,6 +20,7 @@ namespace WeightedObjects
         public bool refillPoolWhenEmpty = true;
 
         public int Length => weightedObjects.Count;
+        public int ValidWeightedObjectsLength => validWeightedObjects.Count;
 
         //Runtime Use
         // Order

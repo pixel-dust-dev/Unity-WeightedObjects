@@ -1,6 +1,6 @@
 {
   "name": "com.pixeldust.com.pixel-dust.weighted-lists",
-  "version": "1.6.7",
+  "version": "1.6.8",
   "displayName": "PixelDust Weighted Lists (alpha)",
   "description": "A faster way to deal with random elements in lists!",
   "unity": "2020.1",

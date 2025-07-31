@@ -13,7 +13,10 @@ namespace WeightedObjects
     {
         [SerializeField]
         List<WeightedObject<T>> weightedObjects = new List<WeightedObject<T>> { };
+        public List<WeightedObject<T>> WeightedObjects => weightedObjects;
+
         List<WeightedObject<T>> validWeightedObjects = new List<WeightedObject<T>>();
+        public List<WeightedObject<T>> ValidWeightedObjects => validWeightedObjects;
 
         public RandomType randomType = RandomType.WeightedRandom;
         public bool canRepeat = true;
